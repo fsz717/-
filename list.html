@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="list.css">
+</head>
+
+<body>
+    <section>
+        <p id="search"><input type="text" class="txt"><input type="button" value="搜索" class="search"><input type="button"
+                class="add" value="添加"></p>
+        <table>
+            <thead>
+                <tr>
+                    <td>编号</td>
+                    <td>LOGO</td>
+                    <td>职位名称</td>
+                    <td>工作城市</td>
+                    <td>薪水</td>
+                    <td>学历</td>
+                    <td>工作性质</td>
+                    <td>经验</td>
+                    <td>岗位描述</td>
+                    <td>公司名称</td>
+                    <td>创建时间</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="page">
+        </div>
+    </section>
+    <div class="box">
+        <form id= "uploadForm" method="POST" class='sub'  action="http:/127.0.0.1:666/positions/add">
+            <p><label>LOGO</label><input type="file" class="t0" id="companyLogo" name="companyLogo"></p>
+            <p><label>职位名称</label><input type="text" class="t1" id='positionName' name='positionName'></p>
+            <p><label>工作城市</label><input type="text" class="t2" id="city" name="city"></p>
+            <p><label>薪水</label><input type="text" class="t3" id="salary" name="salary"></p>
+            <p><label>学历</label><input type="text" class="t4" id="degree" name="degree"></p>
+            <p><label>工作性质</label><input type="text" class="t5" id="type" name="type"></p>
+            <p><label>经验</label><input type="text" class="t6" id="experience" name="experience"></p>
+            <p><label>岗位描述</label><input type="text" class="t7" id="description" name="description"></p>
+            <p><label>公司名称</label><input type="text" class="t8" id="companyName" name="companyName"></p>
+            <!-- <p><input type="submit" value="提交" class="submit"></p> -->
+            <!-- 若是用submit会出现页面跳转,并且form添加enctype="multipart/form-data'，这不是我们需要的，但是他在后端不用操作了，只要前段写name属性，但是用formData对象创建一个数据 -->
+            <p><input type="button" value="提交" class="submit"></p>
+            <span class="btn_del">x</span>
+        </form>
+        <div class="ban">
+        </div>
+    </div>
+    <script src="jquery-1.11.3.js"></script>
+    <script src="list.js"></script>
+</body>
+
+</html>

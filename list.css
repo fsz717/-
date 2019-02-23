@@ -1,0 +1,150 @@
+ul,p,input,h3,h2,h1,body{
+    margin: 0;
+    padding: 0;
+}
+body{
+    height: 100%;
+}
+section{
+    width: 1300px;
+    padding-top: 50px;
+    margin: 0 auto;
+}
+table{
+    width: 100%;
+    margin: 0 auto;
+}
+#search{
+    overflow: hidden;
+}
+#search input{
+    line-height: 25px;
+    width: 250px;
+    float: left;
+    outline: none;
+    border: 1px solid #ccc;
+}
+#search input[type=button]{
+width: 50px;
+background: #666;
+color: #fff;
+border-left:0; 
+cursor: pointer;
+}
+thead{
+    background: #f1f1f1;
+}
+table{
+    margin-top:20px; 
+    border-collapse: collapse;
+}
+table td{
+    text-align: center;
+    padding:0 10px;
+    border: 1px solid #ccc; 
+    line-height: 50px;
+    
+}
+table tr td:last-of-type{
+    text-align:center
+}
+.operate a{
+    display:inline-block;
+    width: 50px;
+    margin-right: 5px;
+    line-height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+tbody{
+    color: #666;
+}
+tbody tr:nth-of-type(2n){
+    background: #f1f1f1;
+}
+.edit{
+    background:skyblue;
+}
+.del{
+    background: rosybrown;
+}
+.page{
+    padding-right: 30px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+.page p:first-of-type{
+float: left;
+}
+.sigle_p span{
+    cursor: pointer;
+}
+.page p:last-of-type{
+    float: right;
+    }
+.page p span{
+    width: 50px;
+    line-height: 25px;
+    border: 1px solid #ccc;
+    text-align: center;
+    display: inline-block;
+}
+.select{
+    background: #f1f1f1;
+}
+.sub{
+    border-radius:5px;
+    background: #fff;
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    padding: 10px 20px 10px 0;
+}
+.sub p{
+    margin-bottom: 10px;
+    line-height:30px;
+}
+.sub label{
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    padding-right: 20px;
+}
+.sub p:last-of-type input{
+    width: 80px;
+    text-align: center;
+    border: 1px  solid #ccc;
+    border-radius: 5px;
+    margin-left: 162px
+   
+}
+img{
+    display: block;
+}
+.sub input{
+    outline: none;
+    line-height: 24px;
+    width: 250px;
+}
+.ban{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.4);
+}
+.box{
+    display: none;
+}
+.btn_del{
+    text-align: center;
+    color: #ccc;
+    font-size: 22px;
+    position: absolute;
+    top: -7px;
+    right: 1px;
+    cursor:pointer;
+}

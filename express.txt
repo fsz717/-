@@ -1,0 +1,3 @@
+使用express连接Mongoose
+1、cnpm i mongooes -S;在当前项目下
+2、使用rmvc思想来构建后台逻辑

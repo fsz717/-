@@ -1,0 +1,72 @@
+通过Ajax serialize()表单进行序列化方式上传文件，使用FormData进行Ajax请求
+
+通过传统的form表单提交的方式上传文件：
+
+ 代码如下	复制代码
+<form id= "uploadForm" action= /cfJAX_RS/rest/file/upload" method= "post" enctype ="multipart/form-data">  
+     <h1 >测试通过Rest接口上传文件 </h1>  
+     <p >指定文件名： <input type ="text" name="filename" /></p>  
+     <p >上传文件： <input type ="file" name="file" /></p>  
+     <p >关键字1： <input type ="text" name="keyword" /></p>  
+     <p >关键字2： <input type ="text" name="keyword" /></p>  
+     <p >关键字3： <input type ="text" name="keyword" /></p>  
+     <input type ="submit" value="上传"/>  
+</form>
+
+serialize()对form表单进行序列化提交
+
+不过传统的form表单提交会导致页面刷新，但是在有些情况下，我们不希望页面被刷新，这种时候我们都是使用Ajax的方式进行请求的：
+
+ 代码如下	复制代码
+$.ajax({  
+     url : "http://localhost:8080/STS/rest/user",  
+     type : "POST",  
+     data : $( '#postForm').serialize(),  
+     success : function(data) {  
+          $( '#serverResponse').html(data);  
+     },  
+     error : function(data) {  
+          $( '#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);  
+     }  
+});
+
+如上，通过$(‘#postForm’).serialize()可以对form表单进行序列化，从而将form表单中的所有参数传递到服务端。
+
+但是上述方式，只能传递一般的参数，上传文件的文件流是无法被序列化并传递的。
+不过如今主流浏览器都开始支持一个叫做FormData的对象，有了这个FormData，我们就可以轻松地使用Ajax方式进行文件上传了。
+
+FormData是什么呢？我们来看看Mozilla上的介绍
+
+XMLHttpRequest Level 2添加了一个新的接口FormData.利用FormData对象,我们可以通过JavaScript用一些键值对来模拟一系列表单控件,我们还可以使用XMLHttpRequest的send()方法来异步的提交这个”表单”.比起普通的ajax,使用FormData的最大优点就是我们可以异步上传一个二进制文件.
+所有主流浏览器的较新版本都已经支持这个对象了，比如Chrome 7+、Firefox 4+、IE 10+、Opera 12+、Safari 5+。
+
+使用FormData，进行Ajax请求并上传文件
+
+ 代码如下	复制代码
+<form id= "uploadForm" >  
+      <p >指定文件名： <input type="text" name="filename" value= ""/></p >  
+      <p >上传文件： <input type="file" name="file"/></ p>  
+      <input type="button" value="上传" onclick="doUpload()"/>  
+</form>
+
+
+function doUpload() {  
+     var formData = new FormData($( "#uploadForm" )[0]);  
+     $.ajax({  
+          url: 'http://localhost:8080/cfJAX_RS/rest/file/upload' ,  
+          type: 'POST',  
+          data: formData,  
+          async: false,  
+          cache: false,  
+          contentType: false,  
+          processData: false,  
+          success: function (returndata) {  
+              alert(returndata);  
+          },  
+          error: function (returndata) {  
+              alert(returndata);  
+          }  
+     });  
+}
+
+以上是jquery Ajax serialize()表单进行序列化方式上传文件的全部内容，

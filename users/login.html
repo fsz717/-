@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login</title>
+    <style>
+        h3{
+                text-align: center;
+                font-weight: 400;
+            }
+            input,p,h3{
+                margin: 0;
+                padding: 0;
+            }
+            form{
+                padding: 30px 0 60px;
+                width: 500px;
+                margin: 50px auto;
+                border: 1px solid #ccc;
+            }
+            form p{
+                line-height: 30px;
+                margin-top: 15px;
+            }
+            form p label{
+                display: inline-block;
+                text-align: right;
+                padding-right: 5px;
+                width:110px;
+            }
+            form p input[type=text],form p input[type=password]{
+                width: 250px;
+                outline: none;
+                border: 1px solid #ccc;
+                line-height: 28px;
+            }
+            
+            form p:last-of-type{
+                text-align: center
+            }
+            .login{
+                border: 1px solid #ccc;
+                background: #fff;
+                color: #333;
+                width: 100px;
+                line-height: 28px;
+                border-radius:5px;
+                 outline: none;
+                 cursor: pointer;
+                 margin-top: 30px;
+            }
+            .error{
+                color: red;
+                font-size: 12px;
+            }
+        </style>
+</head>
+
+<body>
+    <form>
+        <h3>用户登录</h3>
+        <p><label for="userName">用户名：</label><input type="text" id="userName" name="userName" class="fo"><span></span></p>
+        <p><label for="password">密码：</label><input type="password" id="password" name="password" class="fo"><span></span></p>
+        <p><input type="button" value="登录" class="login"></p>
+    </form>
+    <script src='jquery-1.11.3.js'></script>
+    <script>
+        var  flag=false;
+        function oneValues() {
+            var result="";
+            var url = window.location.search; //获取url中"?"符后的字串  
+            if (url.indexOf("?") != -1) {
+                result = url.substr(url.indexOf("=") + 1);
+            }
+            return result;
+        }
+
+        if (oneValues() != "") {
+            var url = "http://127.0.0.1:666/users/getInfo?userName=" + oneValues();
+            fetch(url)
+                .then(body => body.json())
+                .then(res => {
+                    var uname=res.arr[0].userName
+                    var pwd=res.arr[0].password
+                    $("#userName").val(uname)
+                    $("#password").val(pwd)
+                    flag=true;
+                })
+        }
+       $("#userName").blur(function(){
+            var value=$(this).val()
+                if (value != "") {
+                    fetch("http://127.0.0.1:666/users/getInfo?userName=" + value)
+                        .then(body => body.json())
+                        .then(res => {
+                            if (res.status) {
+                                flag = true;
+                            } else {
+                                flag=false;
+                               alert("你还没有注册哦！赶快去注册吧！");
+                               location.href='register.html'
+                            }
+                        })
+                }
+       })
+        $(".login").click(function(){
+            var uname1=$("#userName").val()
+            var pwd1=$("#password").val()
+            if(flag){
+                fetch( "http://127.0.0.1:666/users/getInfo?userName="+uname1)
+                        .then(body=>body.json())
+                        .then((res)=>{
+                            if(pwd1==res.arr[0].password){
+                                alert("登录成功")
+                                $("form .fo").val("")
+                            }else{
+                                alert("密码错误，登录失败")
+                            }
+                        })
+            }
+        })
+    </script>
+</body>
+
+</html>

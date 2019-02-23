@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    职位列表
+    <ul id="uu">
+        <li></li>
+    </ul>
+    <button id="btn">点击获取数据</button>
+    <script>
+        btn.onclick=function(){
+            //fetch 提供了一个获取资源的接口（包括跨域）
+            fetch("http://127.0.0.1:666/positions/getList")
+            .then(body => body.json())
+            .then(res => {
+                console.log(res)
+                const list = res.list;//观察res，发现status是一个数组
+                // console.log(list)
+                var str = ""
+                // console.log(list)
+                list.forEach(v => {
+                    str += `<li>${v.positionName}</li>`
+                })
+                // console.log(str)
+                uu.innerHTML = str;
+            })
+        }
+    </script>
+</body>
+</html>

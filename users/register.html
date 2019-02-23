@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>register</title>
+    <style>
+        h3{
+            text-align: center;
+            font-weight: 400;
+        }
+        input,p,h3{
+            margin: 0;
+            padding: 0;
+        }
+        form{
+            padding: 30px 0 60px;
+            width: 500px;
+            margin: 50px auto;
+            border: 1px solid #ccc;
+        }
+        form p{
+            line-height: 30px;
+            margin-top: 15px;
+        }
+        form p label{
+            display: inline-block;
+            text-align: right;
+            padding-right: 5px;
+            width:110px;
+        }
+        form p input[type=text],form p input[type=password]{
+            width: 250px;
+            outline: none;
+            border: 1px solid #ccc;
+            line-height: 28px;
+        }
+        form p input[type=radio],form p input[type=checkbox]{
+            margin-left: 15px;
+        }
+        form p:last-of-type{
+            text-align: center
+        }
+        .reg{
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+            width: 100px;
+            line-height: 28px;
+            border-radius:5px;
+             outline: none;
+             cursor: pointer;
+             margin-top: 30px;
+        }
+        form p.ranNum input{
+            width: 80px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        form p.ranNum span{
+            text-align: center;
+            margin:0 15px;
+            vertical-align: middle;
+            width: 80px;
+            line-height: 28px;
+            height: 28px;
+            border-radius: 5px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            background: #f1f1f1;
+        }
+        form p.ranNum b{
+            font-weight: 400;
+            color: #ccc;
+            font-size:14px; 
+            cursor: pointer;
+        }
+        .error{
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <h3>用户注册</h3>
+        <p><label for="userName">用户名：</label><input type="text" id="userName" name="userName" class="fo"><span></span></p>
+        <p><label for="password">密码：</label><input type="password" id="password" name="password" class="fo"><span></span></p>
+        <p><label for="phoneNum">手机号：</label><input type="text" id="phoneNum" name="phoneNum" class="fo"><span></span></p>
+        <p><label for="email">邮箱：</label><input type="text" id="email" name="email" class="fo"><span></span></p>
+        <p><label for="sex">性别：</label><input type="radio" id="sex" name="sex" checked value="男">男<input type="radio" id="sex"
+                name="sex" value="女">女</p>
+        <p class="hobby"><label>爱好：</label><input type="checkbox" name="hobby" value="吃零食">吃零食<input type="checkbox" name="hobby" value="追剧">追剧<input
+                type="checkbox" name="hobby" value="逛街">逛街</p>
+        <p class="ranNum"><label>验证码：</label><input type="text" id="randomNum" name="randomNum" class="fo"> <span></span><b>刷新验证码</b></p>
+        <p><input type="button" value="注册" class="reg"></p>
+    </form>
+    <script src='jquery-1.11.3.js'></script>
+    <script>
+        var flag = false;
+        $('form p').on('blur', '.fo', function () {
+            var name = $(this).attr('name')
+            $that = $(this)
+            var value = $(this).val();
+            if (name == 'userName') {
+                if (value != "") {
+                    fetch("http://127.0.0.1:666/users/getInfo?userName=" + value)
+                        .then(body => body.json())
+                        .then(res => {
+                            if (res.status) {
+                                $that.next().addClass("error").text(res.msg);
+                                flag = false;
+                            } else {
+                                if (/^[A-z||_]\S{2,5}$/.test(value)) {
+                                    flag = true;
+                                    $that.next().addClass("error").text("");
+                                } else {
+                                    flag = false;
+                                    $that.next().addClass("error").text("用户名不合法");
+                                }
+                            }
+                        })
+                } else {
+                    flag = false;
+                    $that.next().addClass("error").text("请输入用户名");
+                }
+            } else if (name == 'password') {
+                judge((value != "" && /\w{6,12}/.test(value)), "6到12位非空字符")
+            } else if (name == 'phoneNum') {
+                judge((value != "" && /\d{11}/.test(value)), "要为11位数字")
+            } else if (name == 'email') {
+                judge((value != "" && /^\w+@\w+(\.\w+)+$/.test(value)), "邮箱不合法")
+            } else if (name == 'randomNum') {
+                if (value != "" && value == $that.next().text()) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    alert("验证码不正确")
+                }
+            }
+        })
+$(".reg").click(function(){
+    console.log(flag)
+    if(flag){
+        var data=$("form").serialize()
+        console.log(data)
+        $.post("http://127.0.0.1:666/users/register",data,function(res){
+            if(res.status){
+                alert("注册成功")
+                 location.href='login.html?userName='+$("#userName").val();
+                //  $(".fo").val("")
+            }else{
+                alert("注册失败")
+            }
+        })
+    }else{
+        alert("请检查信息填写是否合法")
+    }
+
+})
+        //判断输入框内容是否合法
+        function judge(cond, str) {
+            if (cond) {
+                flag = true;
+                $that.next().addClass("error").text("");
+            } else {
+                flag = false;
+                $that.next().addClass("error").text(str);
+            }
+        }
+        class randomNum {
+            constructor() { }
+            //获取元验证码中的字母和数字
+            data() {
+                var arr = [];
+                for (var i = 0; i < 26; i++) {
+                    arr.push(String.fromCharCode(97 + i));
+                }
+                for (var i = 0; i < 26; i++) {
+                    arr.push(String.fromCharCode(65 + i));
+                }
+                for (var i = 0; i < 10; i++) {
+                    arr.push(String.fromCharCode(48 + i));
+                }
+                return arr;
+            }
+            //获取随机验证码
+            randomCode() {
+                var arr = this.data();
+                var array = [];
+                for (var i = 0; i < 4; i++) {
+                    var ind = parseInt(Math.random() * 62);
+                    array.push(arr[ind]);
+                }
+                var str = array.join("");
+                return str;
+            }
+        }
+        var randomnum = new randomNum()
+        $(".ranNum").find('span').text(randomnum.randomCode()).end().find("b").click(function () {
+            $(this).prev().text(randomnum.randomCode())
+        })
+    </script>
+</body>
+
+</html>
